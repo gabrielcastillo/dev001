@@ -33,3 +33,9 @@
 .key {
   background-image:url('../icons/key.png') !important;
 }
+.capslock{
+  background:url('../icons/bullet_error.png') no-repeat center left;
+  padding:2px;
+  padding-left:20px;
+  font-weight:700;
+}

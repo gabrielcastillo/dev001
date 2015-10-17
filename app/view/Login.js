@@ -39,6 +39,8 @@ Ext.define('Packt.view.Login', {
           name: 'password',
           fieldLabel: 'Password',
           maxLength: 25,
+          enableKeyEvents: true,
+          id: 'password',
         }
       ],
       dockedItems: [
