@@ -39,3 +39,10 @@
   padding-left:20px;
   font-weight:700;
 }
+
+#titleHeader {
+  color:#000;
+  font-size:20px;
+  font-weight:bold;
+  font-family:'Lucida Grande', Arial, Sans;
+}
