@@ -2,7 +2,9 @@ Ext.define('Packt.controller.Login', {
   extend: 'Ext.app.Controller',
 
   requires: [
-    'Packt.util.MD5'
+    'Packt.util.MD5',
+    'Packt.util.Util',
+    'Packt.util.SessionMonitor',
   ],
 
   views: [
@@ -87,6 +89,7 @@ Ext.define('Packt.controller.Login', {
           if( result.success ){
             login.close();
             Ext.create('Packt.view.MyViewport');
+            Packt.util.SessionMonitor.start();
           }else{
             Ext.Msg.show({
               title: 'Fail!',
@@ -111,36 +114,21 @@ Ext.define('Packt.controller.Login', {
     Ext.Ajax.request({
       url: 'php/logout.php',
       success: function(conn, response, options, eOpts) {
-        var result = Ext.JSON.decode(conn.responseText, true);
-
-        if( !result){
-          result = {};
-          result.success = false;
-          result.msg = conn.responseText;
-        }
+        var result = Packt.util.Util.decodeJSON(conn.responseText);
 
         if(result.success){
           button.up('mainviewport').destroy();
           window.location.reload();
         }else{
-          Ext.Msg.show({
-            title: 'Error!',
-            msg: result.msg,
-            icon: Ext.Msg.ERROR,
-            buttons: Ext.Msg.OK
-          });
+          Packt.util.Util.showErrorMsg(conn.responseText);
         }
       },
+
       failure: function(conn, response, options, eOpts) {
-        Ext.Msg.show({
-          title: 'Error!',
-          msg: conn.responseText,
-          icon: Ext.Msg.ERROR,
-          buttons: Ext.Msg.OK
-        });
+        Packt.util.Util.showErrorMsg(conn.responseText);
       }
     });
-  }
+  },
 
   onTextfieldSpecialKey: function(field, e, options) {
     if(e.getKey() == e.ENTER){
